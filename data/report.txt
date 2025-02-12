@@ -1,0 +1,4 @@
+[
+  {"student_id": "S101", "name": "Mike", "course": "CS101", "grade": "A", "attendance": "95%"},
+  {"student_id": "S102", "name": "Emily", "course": "CS102", "grade": "B+", "attendance": "90%"}
+]

@@ -1,0 +1,5 @@
+[
+  {"student_id": "S101", "student_name": "Mike", "age": 20, "course_id": "CS101"},
+  {"student_id": "S102", "student_name": "Emily", "age": 22, "course_id": "CS102"},
+  {"student_id": "S103", "student_name": "Wilson", "age": 21, "course_id": "CS103"}
+]

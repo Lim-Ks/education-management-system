@@ -1,0 +1,9 @@
+[
+  {"user_id": 1001, "name": "John", "role": "admin", "password": "admin123"},
+  {"user_id": 1002, "name": "Jane", "role": "teacher", "password": "teach456"},
+  {"user_id": 1003, "name": "Mike", "role": "student", "password": "stu789"},
+  {"user_id": 1004, "name": "Emma", "role": "staff", "password": "staff100"},
+  {"user_id": 1005, "name": "Emily", "role": "student", "password": "stu780"},
+  {"user_id": 1006, "name": "Wilson", "role": "student", "password": "stu719"},
+  {"user_id": 1007, "name": "Lim", "role": "admin", "password": "admin123"}
+]
