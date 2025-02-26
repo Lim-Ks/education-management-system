@@ -1,0 +1,7 @@
+[
+    {"student_id": "S101", "course_id": "CS101", "date": "2025/3/4", "status": "absent"},
+    {"student_id": "S102", "course_id": "CS101", "date": "2025/3/4", "status": "present"},
+    {"student_id": "S101", "course_id": "CS101", "date": "2025/3/4", "status": "present"},
+    {"student_id": "S101", "course_id": "CS101", "date": "2025/3/4", "status": "present"},
+    {"student_id": "S101", "course_id": "CS101", "date": "2025/3/4", "status": "present"}
+]
