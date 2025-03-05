@@ -1,0 +1,5 @@
+[
+   {"course_id": "CS101", "course_material": "Lecture notes 1", "material_url": "Introduction_to_Programming.pdf"},
+   {"course_id": "CS102", "course_material": "Assignment 1", "material_url": "Data_structure_ex.pdf"},
+   {"course_id": "CS103", "course_material": "Announcement 1", "material_url": "Exam_week.pdf"}
+]
