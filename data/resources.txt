@@ -1,0 +1,5 @@
+[
+  {"resource_id": "R002", "resource_name": "lll", "quantity": 3, "allocated_to": ""},
+  {"resource_id": "R004", "resource_name": "lll", "quantity": 3, "allocated_to": ""},
+  {"resource_id": "R001", "resource_name": "dd", "quantity": 3, "allocated_to": ""}
+]

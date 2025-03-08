@@ -1,0 +1,4 @@
+[
+  {"event_id": "E001", "event_name": "CNY", "event_date": "2025-05-15", "event_description": ""},
+  {"event_id": "E002", "event_name": "deepavali", "event_date": "2025-09-19", "event_description": ""}
+]

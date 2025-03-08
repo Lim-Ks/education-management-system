@@ -1,7 +1,7 @@
 from sharedfunction import *
 from teacher import *
 from student import *
-
+from staff import *
 
 def add_user(name, role, password):
     user_list = load_data_file("user.txt")
@@ -32,6 +32,7 @@ def student_management():
                 print("phone number: ", student["phone_num"])
                 print("emergency number: ", student["emergency_num"])
                 print("enrollment status: ",student["enrollment_status"])
+                print("status: ",student["status"])
                 print("------------")
         elif choice == 2:
             try:
@@ -57,6 +58,8 @@ def student_management():
                 print("eassignment grade: ", grade["assignment_grade"])
                 print("teacher feedback: ", grade["feedback"])
                 print("------------")
+        elif choice == 4:
+            break
 
 
 def manage_user():
@@ -160,3 +163,4 @@ def login():
             add_student()
             add_user(name,"student",password)
 
+login()

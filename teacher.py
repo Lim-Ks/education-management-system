@@ -1,13 +1,7 @@
 from sharedfunction import *
-# File paths
-Course_File = "course.txt"
-Student_File = "student.txt"
-Grade_File = "grade.txt"
-Attendance_File = "attendance.txt"
-Report_File = "report.txt"
 
 def enroll_student():
-    data = load_data_file(Student_File)
+    data = load_data_file("student.txt")
     course_id = str(input("Enter course id:"))
     student_id = str(input("Enter student id:"))
     student_name = str(input("Enter student name:"))
@@ -19,7 +13,7 @@ def enroll_student():
                     return
                 else:
                     student["course_id"].append(course_id)
-                    save_data_file(Student_File, data)
+                    save_data_file("student.txt", data)
                     print(f"Student {student_id},{student_name} is successfully enroll in course {course_id}.")
                     return
 
@@ -27,7 +21,7 @@ def enroll_student():
 
 #remove student course
 def remove_student():
-    data = load_data_file(Student_File)
+    data = load_data_file("student.txt")
     student_id = str(input("Enter the student id:"))
     course_id = str(input("Enter course id:"))
 
@@ -36,7 +30,7 @@ def remove_student():
             for course in student["course_id"]:
                 if course == course_id:
                     student["course_id"].remove(course_id)
-                    save_data_file(Student_File,data)
+                    save_data_file("student.txt",data)
                     print(f"Course {course_id} is removed from student {student_id}.")
                     return
                 else:
@@ -45,7 +39,7 @@ def remove_student():
     print(f"Student {student_id} not found.")
 
 def grade():
-    data = load_data_file(Grade_File)
+    data = load_data_file("garde.txt")
     try:
         student_id = str(input("Enter student id:"))
         exam_score = int(input("Enter exam score:"))
@@ -82,7 +76,7 @@ def grade():
         new_student = {"student_id": student_id, "exam_score": exam_score, "exam_grade": exam_grade,
                        "assignment_score": asg_score,"assignment_grade": asg_grade,"feedback": feedback}
         data.append(new_student)
-        save_data_file(Grade_File, data)
+        save_data_file("garde.txt", data)
         print(f"Student {student_id} added.")
         print(f"Student {student_id} exam_score: {exam_score}")
         print(f"Student {student_id} exam_grade: {exam_grade}")
@@ -94,10 +88,22 @@ def grade():
 
 
 def attendance_tracking():
-    data = load_data_file(Attendance_File)
+    data_attendance = load_data_file("attendance.txt")
+    data_student = load_data_file("student.txt")
+    data_course = load_data_file("course.txt")
+
     student_id = str(input("Enter student id:"))
     course_id = str(input("Enter course id:"))
     attendance_date = str(input("Enter date:"))
+
+    exists = any(
+        student["student_id"] == student_id and
+        course["course_id"] == course_id
+        for student in data_student
+        for course in data_course)
+    if not exists:
+        print("Invalid student id or course id.")
+        return
 
     valid_status = ["absent","present"]
     status = str(input("Enter attendance status(absent/present):"))
@@ -106,16 +112,16 @@ def attendance_tracking():
         print("Invalid status. Please enter 'present' or 'absent'.")
         status = str(input("Enter attendance status(Absent/Present):"))
 
-    for record in data:
+    for record in data_attendance:
         if record["student_id"] == student_id and record["course_id"] == course_id and record["date"] == attendance_date:
             print(f"Attendance record for student {student_id} on {attendance_date} is already exists.")
             return
 
     new_record = {"student_id": student_id,"course_id": course_id,"date": attendance_date,"status": status.lower()}
-    data.append(new_record)
-    save_data_file(Attendance_File,data)
+    data_attendance.append(new_record)
+    save_data_file("attendance.txt",data)
     print(f"Attendance recorded: {student_id} was {status} on {attendance_date}.")
-attendance_tracking()
+
 def calculate_attendance(student_id,data):
 
     total_days = 0
@@ -132,6 +138,100 @@ def calculate_attendance(student_id,data):
 
     percentage = (present_days/total_days) * 100
     return percentage
+
+def report_generation():
+    while True:
+        report_list = load_data_file("report.txt")
+        grade_list = load_data_file("grade.txt")
+        student_list = load_data_file("student.txt")
+        attendance_list = load_data_file("attendance.txt")
+        course_list = load_data_file("course.txt")
+        try:
+            admin_input = int(input("===== Report Generation =====\n1)view report\n2)update report\n3)add report\n4)exit\nEnter a number: "))
+        except ValueError:
+            print("Invalid input. Please enter a number")
+            continue
+        with open("report.txt", "r") as file:
+            reports = json.load(file)
+        if admin_input == 1:
+            for report in report_list:
+                print("------------")
+                print("student id: ", report["student_id"])
+                print("name: ", report["name"])
+                print("course: ", report["course"])
+                print("grade: ", report["grade"])
+                print("attendance: ",report["attendance"])
+                print("teacher review: ",report["teacher_review"])
+                print("------------")
+        elif admin_input == 2:
+            student_id =str(input("Enter the student id that you want to update: "))
+            exists = any(student["student_id"] == student_id for student in student_list)
+            if not exists:
+                print("Please enter a valid student id.")
+                continue
+            for report in report_list:
+                if student_id == report["student_id"]:
+                    change_student = report
+                    wrong_key = str(input("student id, name, course, grade, attendance, teacher review\nEnter the data type that need to update: "))
+                    correct_value = str(input("Enter the correct data"))
+                    change_student[wrong_key] =correct_value
+            save_data_file("report.txt",report_list)
+        elif admin_input == 3:
+            student_id = str(input("Enter the student id: "))
+            course_id =str(input("Enter the course id: "))
+            teacher_review = str(input("Enter the teacher review: "))
+            exists = any(
+                student["student_id"] == student_id and
+                course["course_id"] == course_id
+                for student in student_list
+                for course in course_list)
+            if not exists:
+                print("Invalid student id or course id.")
+                continue
+            for grade in grade_list:
+                if student_id == grade["student_id"]:
+                    if course_id == grade["course_id"]:
+                        total_score = grade["exam_score"]+grade["assignment_score"]
+            if total_score >= 90:
+                final_grade = "A+"
+            elif total_score >=80:
+                final_grade = "A"
+            elif total_score >=70:
+                final_grade = "A-"
+            elif total_score >=60:
+                final_grade = "B+"
+            elif total_score >= 50:
+                final_grade = "B"
+            elif total_score >= 40:
+                final_grade = "C"
+            elif total_score >= 30:
+                final_grade = "D"
+            elif total_score >= 20:
+                final_grade = "E"
+            else:
+                final_grade ="F"
+            total_class = 0
+            total_present = 0
+            for attendance in attendance_list:
+                if student_id == attendance["student_id"]:
+                    if course_id == attendance["course_id"]:
+                        total_class+=1
+                        if attendance["status"] == "present":
+                            total_present+=1
+            attendance = f"{int(total_present/total_class*100)}%"
+            for student in student_list:
+                if student["student_id"] == student_id:
+                    student_name = student["name"]
+            for course in course_list:
+                if course_id == course["course_id"]:
+                    course_name = course["course_name"]
+            new_report = {"student_id": student_id, "name": student_name, "course": course_name, "grade": final_grade, "attendance": attendance,"teacher_review":teacher_review}
+            report_list.append(new_report)
+            save_data_file("report.txt",report_list)
+        elif admin_input == 4:
+            break
+        else:
+            print("please enter a valid number")
 
 def teacher():
     while True:
@@ -194,7 +294,7 @@ def teacher():
             attendance_tracking()
 
         elif choice == 5:
-            generate_report()
+            report_generation()
 
         elif choice == 6:
             print("Exiting the system...")

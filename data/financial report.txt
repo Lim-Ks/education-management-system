@@ -1,0 +1,3 @@
+[
+  {"student_id": "S101", "name": "John", "total_fee": 15000, "total_paid": 10000, "outstanding": 5000}
+]
