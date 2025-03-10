@@ -2,6 +2,7 @@ import re
 from datetime import datetime
 from sharedfunction import *
 from student import add_student
+
 def validate_date(date_text):
     try:
         datetime.strptime(date_text, '%Y-%m-%d')
@@ -14,7 +15,7 @@ def validate_student_id(student_id):
     return re.match(pattern, student_id)
 
 def validate_resource_id(resource_id):
-    pattern = r'^R\d{3}$'
+    pattern = r'^RE\d{3}$'
     return re.match(pattern, resource_id)
 
 #main menu####
