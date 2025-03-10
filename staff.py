@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 from sharedfunction import *
-
+from student import add_student
 def validate_date(date_text):
     try:
         datetime.strptime(date_text, '%Y-%m-%d')
@@ -57,7 +57,7 @@ def manage_student_records():
         choice = input("Enter your choice: ").strip()
 
         if choice == "1":
-            register_student()
+            add_student()
         elif choice == "2":
             transfer_student()
         elif choice == "3":
@@ -69,31 +69,6 @@ def manage_student_records():
         else:
             print("Invalid choice. Please try again.")
 
-def register_student():
-    print("\nRegister a New Student")
-    student_id = input("Enter Student ID (format S000): ").strip()
-    if not student_id:
-        print("Student ID cannot be empty.")
-        return
-    if not validate_student_id(student_id):
-        print("Invalid Student ID format. It must be in the format S followed by 3 digits (e.g., S000).")
-        return
-    name = input("Enter Student Name: ").strip()
-    if not name:
-        print("Name cannot be empty.")
-        return
-    name = name.title()
-    status = "registered"
-    record = {"student_id": student_id, "name": name, "status": status}
-
-    records = load_data_file("student.txt")
-    for r in records:
-        if r.get("student_id") == student_id:
-            print("Student already exists.")
-            return
-    records.append(record)
-    save_data_file("student.txt", records)
-    print("Student registered successfully.")
 
 def transfer_student():
     print("\nTransfer Student")
@@ -101,7 +76,7 @@ def transfer_student():
     if not validate_student_id(student_id):
         print("Invalid Student ID format. It must be in the format S followed by 6 digits (e.g., S000).")
         return
-    records = load_data_file("student.txt")
+    records = load_data_file("data/student.txt")
     found = False
     for record in records:
         if record("student_id") == student_id:
@@ -111,7 +86,7 @@ def transfer_student():
             record["status"] = "transferred"
             found = True
     if found:
-        save_data_file("student.txt", records)
+        save_data_file("data/student.txt", records)
         print("Student transferred successfully.")
     else:
         print("Student not found.")
@@ -122,21 +97,21 @@ def withdraw_student():
     if not validate_student_id(student_id):
         print("Invalid Student ID format. It must be in the format S followed by 3 digits (e.g., S000).")
         return
-    records = load_data_file("student.txt")
+    records = load_data_file("data/student.txt")
     found = False
     for record in records:
         if record.get("student_id") == student_id:
             record["status"] = "withdrawn"
             found = True
     if found:
-        save_data_file("student.txt", records)
+        save_data_file("data/student.txt", records)
         print("Student withdrawn successfully.")
     else:
         print("Student not found.")
 
 def view_student_records():
     print("\nStudent Records:")
-    records = load_data_file("student.txt")
+    records = load_data_file("data/student.txt")
     if not records:
         print("No student records found.")
     else:
@@ -167,7 +142,7 @@ def manage_timetable():
             print("Invalid choice. Please try again.")
 
 def add_schedule():
-    records = load_data_file("schedule.txt")
+    records = load_data_file("data/schedule.txt")
     title = input("Enter Schedule Title: ").strip()
     date = input("Enter Date (YYYY-MM-DD): ").strip()
     if not validate_date(date):
@@ -177,11 +152,11 @@ def add_schedule():
     location = input("Enter Location: ").strip()
     new_record = {"title": title, "date": date, "time": time_val, "location": location}
     records.append(new_record)
-    save_data_file("schedule.txt", records)
+    save_data_file("data/schedule.txt", records)
     print("Schedule added successfully.")
 
 def update_schedule():
-    records = load_data_file("schedule.txt")
+    records = load_data_file("data/schedule.txt")
     title = input("Enter Schedule Title to update: ").strip()
     found = False
     for record in records:
@@ -204,23 +179,23 @@ def update_schedule():
                 record["location"] = new_location
             found = True
     if found:
-        save_data_file("schedule.txt", records)
+        save_data_file("data/schedule.txt", records)
         print("Schedule updated successfully.")
     else:
         print("No schedule found for the given title.")
 
 def remove_schedule():
-    records = load_data_file("schedule.txt")
+    records = load_data_file("data/schedule.txt")
     title = input("Enter Schedule Title to remove: ").strip()
     new_records = [record for record in records if record.get("title").lower() != title.lower()]
     if len(new_records) == len(records):
         print("No schedule found for that title.")
     else:
-        save_data_file("schedule.txt", new_records)
+        save_data_file("data/schedule.txt", new_records)
         print("Schedule removed successfully.")
 
 def view_schedule():
-    records = load_data_file("schedule.txt")
+    records = load_data_file("data/schedule.txt")
     if not records:
         print("No schedule records found.")
     else:
@@ -274,7 +249,7 @@ def add_update_resource():
     allocated_to = input("Enter Allocated Class (or leave blank if not allocated): ").strip()
     record = {"resource_id": resource_id, "resource_name": resource_name, "quantity": quantity,
               "allocated_to": allocated_to}
-    records = load_data_file("resources.txt")
+    records = load_data_file("data/resources.txt")
     found = False
     for i, rec in enumerate(records):
         if rec.get("resource_id") == resource_id:
@@ -283,13 +258,13 @@ def add_update_resource():
             break
     if not found:
         records.append(record)
-    save_data_file("resources.txt", records)
+    save_data_file("data/resources.txt", records)
     print("Resource updated successfully.")
 
 
 def view_resources():
     print("\nResources:")
-    records = load_data_file("resources.txt")
+    records = load_data_file("data/resources.txt")
     if not records:
         print("No resource records found.")
     else:
@@ -337,16 +312,16 @@ def add_event():
     event_description = input("Enter Event Description (leave blank if none): ").strip()
     record = {"event_id": event_id, "event_name": event_name, "event_date": event_date,
               "event_description": event_description}
-    records = load_data_file("events.txt")
+    records = load_data_file("data/events.txt")
     records.append(record)
-    save_data_file("events.txt", records)
+    save_data_file("data/events.txt", records)
     print("Event added successfully.")
 
 
 def update_event():
     print("\nUpdate Event")
     event_id = input("Enter Event ID to update: ").strip()
-    records = load_data_file("events.txt")
+    records = load_data_file("data/events.txt")
     updated = False
     for record in records:
         if record.get("event_id") == event_id:
@@ -365,7 +340,7 @@ def update_event():
                 record["event_description"] = event_description
             updated = True
     if updated:
-        save_data_file("events.txt", records)
+        save_data_file("data/events.txt", records)
         print("Event updated successfully.")
     else:
         print("Event not found.")
@@ -373,17 +348,17 @@ def update_event():
 def remove_event():
     print("\nRemove Event")
     event_id = input("Enter Event ID to remove: ").strip()
-    records = load_data_file("events.txt")
+    records = load_data_file("data/events.txt")
     new_records = [record for record in records if record.get("event_id") != event_id]
     if len(new_records) == len(records):
         print("Event not found.")
     else:
-        save_data_file("events.txt", new_records)
+        save_data_file("data/events.txt", new_records)
         print("Event removed successfully.")
 
 def view_events():
     print("\nEvents:")
-    records = load_data_file("events.txt")
+    records = load_data_file("data/events.txt")
     if not records:
         print("No event records found.")
     else:
@@ -418,14 +393,14 @@ def add_message():
         print("Message cannot be empty.")
         return
     record = {"sender": sender, "message": message}
-    records = load_data_file("communication.txt")
+    records = load_data_file("data/communication.txt")
     records.append(record)
-    save_data_file("communication.txt", records)
+    save_data_file("data/communication.txt", records)
     print("Message added successfully.")
 
 def view_messages():
     print("\nMessages:")
-    records = load_data_file("communication.txt")
+    records = load_data_file("data/communication.txt")
     if not records:
         print("No messages found.")
     else:

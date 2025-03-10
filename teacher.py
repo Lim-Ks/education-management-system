@@ -1,7 +1,7 @@
 from sharedfunction import *
 
 def enroll_student():
-    data = load_data_file("student.txt")
+    data = load_data_file("data/student.txt")
     course_id = str(input("Enter course id:"))
     student_id = str(input("Enter student id:"))
     student_name = str(input("Enter student name:"))
@@ -13,7 +13,7 @@ def enroll_student():
                     return
                 else:
                     student["course_id"].append(course_id)
-                    save_data_file("student.txt", data)
+                    save_data_file("data/student.txt", data)
                     print(f"Student {student_id},{student_name} is successfully enroll in course {course_id}.")
                     return
 
@@ -21,7 +21,7 @@ def enroll_student():
 
 #remove student course
 def remove_student():
-    data = load_data_file("student.txt")
+    data = load_data_file("data/student.txt")
     student_id = str(input("Enter the student id:"))
     course_id = str(input("Enter course id:"))
 
@@ -30,7 +30,7 @@ def remove_student():
             for course in student["course_id"]:
                 if course == course_id:
                     student["course_id"].remove(course_id)
-                    save_data_file("student.txt",data)
+                    save_data_file("data/student.txt",data)
                     print(f"Course {course_id} is removed from student {student_id}.")
                     return
                 else:
@@ -39,7 +39,7 @@ def remove_student():
     print(f"Student {student_id} not found.")
 
 def grade():
-    data = load_data_file("garde.txt")
+    data = load_data_file("data/garde.txt")
     try:
         student_id = str(input("Enter student id:"))
         exam_score = int(input("Enter exam score:"))
@@ -76,7 +76,7 @@ def grade():
         new_student = {"student_id": student_id, "exam_score": exam_score, "exam_grade": exam_grade,
                        "assignment_score": asg_score,"assignment_grade": asg_grade,"feedback": feedback}
         data.append(new_student)
-        save_data_file("garde.txt", data)
+        save_data_file("data/garde.txt", data)
         print(f"Student {student_id} added.")
         print(f"Student {student_id} exam_score: {exam_score}")
         print(f"Student {student_id} exam_grade: {exam_grade}")
@@ -88,9 +88,9 @@ def grade():
 
 
 def attendance_tracking():
-    data_attendance = load_data_file("attendance.txt")
-    data_student = load_data_file("student.txt")
-    data_course = load_data_file("course.txt")
+    data_attendance = load_data_file("data/attendance.txt")
+    data_student = load_data_file("data/student.txt")
+    data_course = load_data_file("data/course.txt")
 
     student_id = str(input("Enter student id:"))
     course_id = str(input("Enter course id:"))
@@ -119,7 +119,7 @@ def attendance_tracking():
 
     new_record = {"student_id": student_id,"course_id": course_id,"date": attendance_date,"status": status.lower()}
     data_attendance.append(new_record)
-    save_data_file("attendance.txt",data)
+    save_data_file("data/attendance.txt",data_attendance)
     print(f"Attendance recorded: {student_id} was {status} on {attendance_date}.")
 
 def calculate_attendance(student_id,data):
@@ -141,17 +141,17 @@ def calculate_attendance(student_id,data):
 
 def report_generation():
     while True:
-        report_list = load_data_file("report.txt")
-        grade_list = load_data_file("grade.txt")
-        student_list = load_data_file("student.txt")
-        attendance_list = load_data_file("attendance.txt")
-        course_list = load_data_file("course.txt")
+        report_list = load_data_file("data/report.txt")
+        grade_list = load_data_file("data/grade.txt")
+        student_list = load_data_file("data/student.txt")
+        attendance_list = load_data_file("data/attendance.txt")
+        course_list = load_data_file("data/course.txt")
         try:
             admin_input = int(input("===== Report Generation =====\n1)view report\n2)update report\n3)add report\n4)exit\nEnter a number: "))
         except ValueError:
             print("Invalid input. Please enter a number")
             continue
-        with open("report.txt", "r") as file:
+        with open("data/report.txt", "r") as file:
             reports = json.load(file)
         if admin_input == 1:
             for report in report_list:
@@ -175,7 +175,7 @@ def report_generation():
                     wrong_key = str(input("student id, name, course, grade, attendance, teacher review\nEnter the data type that need to update: "))
                     correct_value = str(input("Enter the correct data"))
                     change_student[wrong_key] =correct_value
-            save_data_file("report.txt",report_list)
+            save_data_file("data/report.txt",report_list)
         elif admin_input == 3:
             student_id = str(input("Enter the student id: "))
             course_id =str(input("Enter the course id: "))
@@ -227,7 +227,7 @@ def report_generation():
                     course_name = course["course_name"]
             new_report = {"student_id": student_id, "name": student_name, "course": course_name, "grade": final_grade, "attendance": attendance,"teacher_review":teacher_review}
             report_list.append(new_report)
-            save_data_file("report.txt",report_list)
+            save_data_file("data/report.txt",report_list)
         elif admin_input == 4:
             break
         else:

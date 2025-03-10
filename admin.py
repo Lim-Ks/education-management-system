@@ -4,19 +4,19 @@ from student import *
 from staff import *
 
 def add_user(name, role, password):
-    user_list = load_data_file("user.txt")
+    user_list = load_data_file("data/user.txt")
     for number, data in enumerate(user_list):
         if number == len(user_list)-1:
             new_user_id = data["user_id"]+1
     new_data = {"user_id": new_user_id, "name": name, "role": role, "password": password}
     user_list.append(new_data)
-    save_data_file("user.txt",user_list)
+    save_data_file("data/user.txt",user_list)
 
 
 def student_management():
     while True:
-        student_list = load_data_file("student.txt")
-        grade_list = load_data_file("grade.txt")
+        student_list = load_data_file("data/student.txt")
+        grade_list = load_data_file("data/grade.txt")
         try:
             choice = int(input("==== Student Management ====\n1) view student\n2) update student profile\n3) view student grade\n4) exit\nEnter your choice: "))
         except ValueError:
@@ -43,7 +43,7 @@ def student_management():
                 if not exists:
                     print("Please enter a valid input.")
                     continue
-                change_data("student.txt", wrong_key, wrong_value, correct_value)
+                change_data("data/student.txt", wrong_key, wrong_value, correct_value)
             except KeyError:
                 print("Please enter a valid input")
                 continue
@@ -64,14 +64,15 @@ def student_management():
 
 def manage_user():
     while True:
-        user_list = load_data_file("user.txt")
+        user_list = load_data_file("data/user.txt")
         try:
-            choice = int(input("==== User Management ====\n1) view user data\n2) Change name\n3) Change password\n4) exit\nEnter your choice: "))
+            choice = int(input("==== User Management ====\n1) view user data\n2) Change name\n3) Change password\n4) add user\n5)exit\nEnter your choice: "))
         except ValueError:
             print("Invalid input. Please enter a number.")
             continue
         if choice == 1:
-            read_file("user.txt")
+            for user in user_list:
+                print(f"User ID = {user["user_id"]}, name = {user["name"]}, role = {user["role"]}, password = {user["password"]}")
         elif choice == 2:
             wrong_name = str(input("enter the name that you want to change: "))
             correct_name = str(input("enter the correct name: "))
@@ -83,11 +84,11 @@ def manage_user():
                 if user["name"] == wrong_name:
                     user["name"] = correct_name
                     if user["role"] == "student":
-                        change_data("student.txt","name",wrong_name,correct_name)
-                        change_data("report.txt","name",wrong_name,correct_name)
+                        change_data("data/student.txt","name",wrong_name,correct_name)
+                        change_data("data/report.txt","name",wrong_name,correct_name)
                     elif user["role"] == "teacher":
-                        change_data("course.txt","teacher",wrong_name,correct_name)
-            save_data_file("user.txt", user_list)
+                        change_data("data/course.txt","teacher",wrong_name,correct_name)
+            save_data_file("data/user.txt", user_list)
         elif choice == 3:
             wrong_password = str(input("enter the password that you want to change: "))
             correct_password = str(input("enter the correct password: "))
@@ -98,8 +99,18 @@ def manage_user():
             for user in user_list:
                 if user["password"] == wrong_password:
                     user["password"] = correct_password
-            save_data_file("user.txt",user_list)
+            save_data_file("data/user.txt",user_list)
         elif choice == 4:
+            name = input("Enter name: ")
+            password = input("Enter password: ")
+            role = input("Enter role: ")
+            if not name or not password:
+                print("please enter a valid name or password")
+            if role.lower() not in ["admin","teacher","student","staff"]:
+                print("please enter a valid role")
+                continue
+            add_user(name, role, password)
+        elif choice == 5:
             break
         else:
             print("please enter a valid number")
@@ -138,7 +149,7 @@ def login():
         if user_input == 1:
             user_role = str(input("admin/student/staff/teacher\nenter your role: "))
             user_password = str(input("Enter your password: "))
-            data_list = load_data_file("user.txt")
+            data_list = load_data_file("data/user.txt")
             for user in data_list:
                 if user_role.lower() == user["role"].lower() and user_password == user["password"]:
                     print(f"Welcome, {user['name']} ({user['role']})!")

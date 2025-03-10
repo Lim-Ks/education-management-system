@@ -13,7 +13,7 @@ def view_profile(student):
 
 
 def add_student():
-    students = load_data_file("student.txt")    #load student.txt
+    students = load_data_file("data/student.txt")    #load student.txt
     for number, data in enumerate(students):
         if number == len(students)-1:
             student_id = data["student_id"]
@@ -24,15 +24,16 @@ def add_student():
     phone_num = str(input("Enter your phone number: "))
     emergency_num = str(input("Enter emergency contact number: "))
     new_student = ({"student_id": new_student_id, "name": student_name, "student_age": student_age,
-                     "course_id": [] , "phone_num": phone_num, "emergency_num": emergency_num, "status": "registered"})
+                     "course_id": [] , "phone_num": phone_num, "emergency_num": emergency_num,
+                    "enrollment_status":"undone","status": "registered"})
     students.append(new_student)    #add new data
-    save_data_file("student.txt", students)  #save new data to student.txt
+    save_data_file("data/student.txt", students)  #save new data to student.txt
     print("Student account created.")
 
 
 def enroll_course(student):
-    students = load_data_file("student.txt")  # Load student.txt
-    courses = load_data_file("course.txt")  # Load course.txt
+    students = load_data_file("data/student.txt")  # Load student.txt
+    courses = load_data_file("data/course.txt")  # Load course.txt
     print("Available Courses:")
     for course in courses:
         print(f"{course['course_id']} : {course['course_name']} - {course['teacher']}")
@@ -52,14 +53,14 @@ def enroll_course(student):
                 print(f"You are already enrolled in {course_id}.")
                 return
             enrolled["course_id"].append(course_id)
-            save_data_file("student.txt", students)  #save to student txt
+            save_data_file("data/student.txt", students)  #save to student txt
             print(f"Successfully enrolled.")
             return
 
 
 #check grades
 def check_grades(student):
-    grades = load_data_file("grade.txt")    #load grades.txt
+    grades = load_data_file("data/grade.txt")    #load grades.txt
     #only the specific student grades
     student_grades = [grade_record for grade_record in grades if grade_record["student_id"] == student["student_id"]]
     if student_grades:  #check for grades
@@ -75,7 +76,7 @@ def check_grades(student):
 
 #submit feedback
 def submit_feedback(student):
-    feedbacks = load_data_file("feedback.txt")  #load feedbacks.txt
+    feedbacks = load_data_file("data/feedback.txt")  #load feedbacks.txt
     course_id = str(input("Enter Course ID for feedback: "))
     course_feedback = str(input("Enter feedback for the course: "))
     teacher_feedback = str(input("Enter feedback for the teacher: "))
@@ -83,13 +84,13 @@ def submit_feedback(student):
     new_feedbacks = {"student_id": student["student_id"], "course_id": course_id, "course_feedback": course_feedback,
                      "teacher_feedback": teacher_feedback, "overall": overall}
     feedbacks.append(new_feedbacks) #add data
-    save_data_file("feedback.txt", feedbacks)   #save data to feedbacks.txt
+    save_data_file("data/feedback.txt", feedbacks)   #save data to feedbacks.txt
     print("Feedback submitted.")
 
 
 #access materials
 def access_materials(student):
-    materials = load_data_file("material.txt")  #load material.txt
+    materials = load_data_file("data/material.txt")  #load material.txt
     student_courses = student["course_id"]    # check enrolled courses
     for material in materials:  #loop through file
         if material["course_id"] in student_courses:
@@ -100,8 +101,8 @@ def access_materials(student):
 
 
 def update_profile(student):
-    students = load_data_file("student.txt")  #load students.txt
-    courses = load_data_file("course.txt")  #load courses.txt
+    students = load_data_file("data/student.txt")  #load students.txt
+    courses = load_data_file("data/course.txt")  #load courses.txt
     print("Update Profile:")
     print("Leave blank to retain current info.")
     new_student_id = str(input(f"Enter new student ID: ")) or student["student_id"]
@@ -152,12 +153,12 @@ def update_profile(student):
             record["phone_num"] = new_num
             record["emergency_num"] = new_emergency_num
             break
-    save_data_file("student.txt", students)  # Save to student.txt
+    save_data_file("data/student.txt", students)  # Save to student.txt
     print("Profile updated.")
 
 
 def student_menu(student_name):
-    student_list = load_data_file("student.txt")
+    student_list = load_data_file("data/student.txt")
     for student_profile in student_list:
         if student_profile["name"] == student_name:
             student = student_profile
