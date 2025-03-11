@@ -18,6 +18,10 @@ def validate_resource_id(resource_id):
     pattern = r'^RE\d{3}$'
     return re.match(pattern, resource_id)
 
+def validate_course_id(course_id):
+    pattern = r'^CS\d{3}$'
+    return re.match(pattern,course_id)
+
 #main menu####
 def staff():
     while True:
@@ -80,7 +84,7 @@ def transfer_student():
     records = load_data_file("data/student.txt")
     found = False
     for record in records:
-        if record("student_id") == student_id:
+        if record.get("student_id") == student_id:
             new_name = input("Enter new name (or press Enter to keep unchanged): ").strip()
             if new_name:
                 record["name"] = new_name.title()
@@ -144,24 +148,30 @@ def manage_timetable():
 
 def add_schedule():
     records = load_data_file("data/schedule.txt")
-    title = input("Enter Schedule Title: ").strip()
+    course_id = input("Enter Schedule Course ID: ").strip()
+    if not validate_course_id(course_id):
+        print("Invalid Course ID format. It must be in the format CS followed by 3 digits (e.g., CS000).")
+        return
     date = input("Enter Date (YYYY-MM-DD): ").strip()
     if not validate_date(date):
         print("Invalid date format. Please use YYYY-MM-DD.")
         return
     time_val = input("Enter Time/Duration: ").strip()
     location = input("Enter Location: ").strip()
-    new_record = {"title": title, "date": date, "time": time_val, "location": location}
+    new_record = {"course_id": course_id, "date": date, "time": time_val, "location": location}
     records.append(new_record)
     save_data_file("data/schedule.txt", records)
     print("Schedule added successfully.")
 
 def update_schedule():
     records = load_data_file("data/schedule.txt")
-    title = input("Enter Schedule Title to update: ").strip()
+    course_id = input("Enter Schedule Course ID to update: ").strip()
+    if not validate_course_id(course_id):
+        print("Invalid Course ID format. It must be in the format CS followed by 3 digits (e.g., CS000).")
+        return
     found = False
     for record in records:
-        if record.get("title").lower() == title.lower():
+        if record.get("course_id").lower() == course_id.lower():
             print("\nCurrent schedule details:")
             print("Date:", record.get("date"))
             print("Time:", record.get("time"))
@@ -187,10 +197,13 @@ def update_schedule():
 
 def remove_schedule():
     records = load_data_file("data/schedule.txt")
-    title = input("Enter Schedule Title to remove: ").strip()
-    new_records = [record for record in records if record.get("title").lower() != title.lower()]
+    course_id = input("Enter Schedule Course ID to remove: ").strip()
+    if not validate_course_id(course_id):
+        print("Invalid Course ID format. It must be in the format CS followed by 3 digits (e.g., CS000).")
+        return
+    new_records = [record for record in records if record.get("course_id").lower() != course_id.lower()]
     if len(new_records) == len(records):
-        print("No schedule found for that title.")
+        print("No schedule found for that Course ID.")
     else:
         save_data_file("data/schedule.txt", new_records)
         print("Schedule removed successfully.")
@@ -202,7 +215,7 @@ def view_schedule():
     else:
         for record in records:
             print("------------")
-            print("Title:", record.get("title"))
+            print("Course ID:", record.get("course_id"))
             print("Date:", record.get("date"))
             print("Time:", record.get("time"))
             print("Location:", record.get("location"))
@@ -227,7 +240,7 @@ def manage_resources():
 
 def add_update_resource():
     print("\nAdd or Update Resource Allocation")
-    resource_id = input("Enter Resource ID (Format: R000): ").strip()
+    resource_id = input("Enter Resource ID (Format: RE000): ").strip()
     if not resource_id:
         print("Resource ID cannot be empty.")
         return

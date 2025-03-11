@@ -21,6 +21,18 @@ def change_data(file_name,data_key,wrong_data,correct_data):
             data[data_key] = correct_data
     save_data_file(file_name,data_list)
 
+
+
+def add_user(name, role, password):
+    user_list = load_data_file("data/user.txt")
+    for number, data in enumerate(user_list):
+        if number == len(user_list)-1:
+            new_user_id = data["user_id"]+1
+    new_data = {"user_id": new_user_id, "name": name, "role": role, "password": password}
+    user_list.append(new_data)
+    save_data_file("data/user.txt",user_list)
+
+
 def schedule_management():
     while True:
         schedule_list =load_data_file("data/schedule.txt")
@@ -36,17 +48,16 @@ def schedule_management():
                     if course["course_id"] == schedule["course_id"]:
                         course_name = course["course_name"]
                 print("------------")
-                print("course name: ", course_name)
+                print("course name: ", schedule["course_name"])
                 print("date: ", schedule["date"])
                 print("duration: ", schedule["time"])
                 print("location: ", schedule["location"])
                 print("------------")
         elif user_input == 2:
             try:
-                wrong_key = str(input("data, time, location\nEnter the data name: "))
+                wrong_key = str(input("date, time, location\nEnter the data name: "))
                 wrong_value = str(input("Enter the wrong data: "))
                 correct_value = str(input("Enter the correct data: "))
-                change_data("data/schedule.txt",wrong_key,wrong_value, correct_value)
                 exists = any(schedule[wrong_key] == wrong_value for schedule in schedule_list)
                 if not exists:
                     print("Please enter a valid input.")
@@ -54,6 +65,12 @@ def schedule_management():
             except KeyError:
                 print("Please enter a valid input ")
                 continue
+            if correct_value:
+                change_data("data/schedule.txt", wrong_key, wrong_value, correct_value)
+            else:
+                print("correct data cannot be blank!")
+                continue
+            print("update successfully")
         elif user_input == 3:
             break
         else:
@@ -63,6 +80,7 @@ def schedule_management():
 def course_management():
     while True:
         course_list =load_data_file("data/course.txt")
+        user_list = load_data_file("data/user.txt")
         try:
             admin_input = int(input("==== Course Management ====\n1)create course\n2)update course\n3)delete course\n4)view course\n5)exit\nEnter a number: "))
         except ValueError:
@@ -76,19 +94,31 @@ def course_management():
             new_course_id = f"CS{course_id_number}"
             course_name = str(input("Enter the course name: "))
             teacher = str(input("Enter the teacher name: "))
-            new_course = {"course_id":new_course_id,"course_name":course_name,"teacher":teacher}
-            course_list.append(new_course)
-            save_data_file("data/course.txt", course_list)
+            if not course_name or not teacher:
+                print("course name or teacher cannot be blank")
+            create = False
+            for user in user_list:
+                if user["role"] == "teacher:":
+                    if user["name"] == teacher:
+                        create = True
+            if create == True:
+                new_course = {"course_id":new_course_id,"course_name":course_name,"teacher":teacher}
+                course_list.append(new_course)
+                save_data_file("data/course.txt", course_list)
+                print("create successfully")
+            else:
+                print("teacher not found")
         elif admin_input == 2:
             try:
                 wrong_key = str(input("course_id / course_name / teacher\nEnter the things that you want to change: "))
                 wrong_value = str(input("Enter the wrong data: "))
                 correct_value = str(input("Enter the correct one: "))
-                change_data("data/course.txt",wrong_key,wrong_value,correct_value)
                 exists = any(course[wrong_key] == wrong_value for course in course_list)
                 if not exists:
                     print("Please enter a valid input.")
                     continue
+                if correct_value:
+                    change_data("data/course.txt", wrong_key, wrong_value, correct_value)
             except KeyError:
                 print("Please enter a valid input")
         elif admin_input == 3:
@@ -109,3 +139,4 @@ def course_management():
             break
         else:
             print("please enter a valid number")
+

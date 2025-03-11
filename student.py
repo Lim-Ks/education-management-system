@@ -1,15 +1,17 @@
 from sharedfunction import *
 
-
 #view profile
-def view_profile(student):
-    print("Student Profile")
-    print(f"Student ID: {student['student_id']}")
-    print(f"Name: {student['name']}")
-    print(f"Age: {student['age']}")
-    print(f"Course: {student['course_id']}")
-    print(f"Phone: {student['phone_num']}")
-    print(f"Emergency Contact: {student['emergency_num']}")
+def view_profile(student_name):
+    students = load_data_file("data/student.txt")
+    for student in students:
+        if student["name"] == student_name:
+            print("Student Profile")
+            print(f"Student ID: {student['student_id']}")
+            print(f"Name: {student['name']}")
+            print(f"Age: {student['age']}")
+            print(f"Course: {student['course_id']}")
+            print(f"Phone: {student['phone_num']}")
+            print(f"Emergency Contact: {student['emergency_num']}")
 
 
 def add_student():
@@ -21,13 +23,18 @@ def add_student():
     new_student_id = f"S{student_id_number}"
     student_name = str(input("Enter your name: "))
     student_age = str(input("Enter your age: "))
+    student_password = str(input("Enter your password: "))
     phone_num = str(input("Enter your phone number: "))
     emergency_num = str(input("Enter emergency contact number: "))
-    new_student = ({"student_id": new_student_id, "name": student_name, "student_age": student_age,
+    if not student_name or not student_age or not student_password or not phone_num or not emergency_num:
+        print("Data cannot be blank!")
+        return
+    new_student = ({"student_id": new_student_id, "name": student_name, "age": student_age,
                      "course_id": [] , "phone_num": phone_num, "emergency_num": emergency_num,
                     "enrollment_status":"undone","status": "registered"})
     students.append(new_student)    #add new data
     save_data_file("data/student.txt", students)  #save new data to student.txt
+    add_user(student_name,"student",student_password)
     print("Student account created.")
 
 
@@ -172,7 +179,7 @@ def student_menu(student_name):
         print("7. Logout")
         choice = str(input("Enter your choice: "))
         if choice == "1":
-            view_profile(student)
+            view_profile(student_name)
         elif choice == "2":
             enroll_course(student)
         elif choice == "3":
