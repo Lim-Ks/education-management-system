@@ -1,4 +1,5 @@
 from sharedfunction import *
+from staff import add_schedule
 
 def enroll_student():
     data_student = load_data_file("data/student.txt")
@@ -168,22 +169,51 @@ def attendance_tracking():
         print(f"Attendance recorded: {student_id} was {status} on {attendance_date}.")
 
 
-def calculate_attendance(student_id,data):
+def manage_schedule():
+    while True:
+        schedule_list =load_data_file("data/schedule.txt")
+        course_list =load_data_file("data/course.txt")
+        try:
+            user_input = int(input("==== Schedule Management ====\n1)view schedule\n2)change data\n3)create schedule\n4)exit\nEnter a number: "))
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+            continue
+        if user_input == 1:
+            for schedule in schedule_list:
+                for course in course_list:
+                    if course["course_id"] == schedule["course_id"]:
+                        course_name = course["course_name"]
+                print("------------")
+                print("course name: ", course["course_name"])
+                print("date: ", schedule["date"])
+                print("duration: ", schedule["time"])
+                print("location: ", schedule["location"])
+                print("------------")
+        elif user_input == 2:
+            try:
+                wrong_key = str(input("date, time, location\nEnter the data name: "))
+                wrong_value = str(input("Enter the wrong data: "))
+                correct_value = str(input("Enter the correct data: "))
+                exists = any(schedule[wrong_key] == wrong_value for schedule in schedule_list)
+                if not exists:
+                    print("Please enter a valid input.")
+                    continue
+            except KeyError:
+                print("Please enter a valid input ")
+                continue
+            if correct_value:
+                change_data("data/schedule.txt", wrong_key, wrong_value, correct_value)
+            else:
+                print("correct data cannot be blank!")
+                continue
+            print("update successfully")
+        elif user_input == 3:
+            add_schedule()
+        elif user_input == 4:
+            break
+        else:
+            print("please enter a valid number")
 
-    total_days = 0
-    present_days = 0
-
-    for record in data:
-        if record["student_id"] == student_id:
-            total_days += 1
-            if record["status"].lower() == 'present':
-                present_days += 1
-
-    if total_days == 0:
-        return None
-
-    percentage = (present_days/total_days) * 100
-    return percentage
 
 def report_generation():
     while True:
@@ -319,7 +349,7 @@ def teacher():
             if course == 1:
                 course_management()
             elif course == 2:
-                schedule_management()
+                manage_schedule()
             else:
                 print("Invalid choice. Try again.")
 
@@ -362,4 +392,3 @@ def teacher():
 
         else:
             print("Invalid choice. Please select a number between 1 and 6.")
-teacher()
