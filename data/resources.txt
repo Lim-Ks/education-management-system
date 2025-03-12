@@ -1,5 +1,5 @@
 [
-  {"resource_id": "RE002", "resource_name": "lll", "quantity": 3, "allocated_to": ""},
-  {"resource_id": "RE004", "resource_name": "lll", "quantity": 3, "allocated_to": ""},
-  {"resource_id": "RE001", "resource_name": "dd", "quantity": 3, "allocated_to": ""}
+  {"resource_id": "RE001", "resource_name": "projector", "quantity": 3, "allocated_to": "R001"},
+  {"resource_id": "RE002", "resource_name": "computer", "quantity": 3, "allocated_to": "R002"},
+  {"resource_id": "RE003", "resource_name": "book", "quantity": 3, "allocated_to": "R003"}
 ]
