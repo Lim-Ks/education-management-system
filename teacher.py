@@ -70,6 +70,7 @@ def remove_student():
                     return
                 else:
                     print(f"Course {course_id} not found.")
+                    return
 
     print(f"Student {student_id} not found.")
 
@@ -78,59 +79,57 @@ def grade():
     data_student = load_data_file("data/student.txt")
     try:
         student_id = str(input("Enter student id:"))
-        course_id = str(input("Enter course id"))
+        course_id = str(input("Enter course id:"))
         exam_score = int(input("Enter exam score:"))
         asg_score = int(input("Enter assignment score:"))
         feedback = str(input("Enter feedback:"))
-
-        exists = any(
-            student["student_id"] == student_id and
-            student["course_id"] == course_id
-            for student in data_student)
-        if not exists:
-            print("Invalid input.")
-            return
+        found = False
+        for student in data_student:
+            if student["student_id"] == student_id:
+                for student_course in student["course_id"]:
+                    if student_course == course_id:
+                        found = True
         if not exam_score or not asg_score or not feedback:
             print("data cannot be blank")
             return
+        if found == True:
+            if exam_score <= 50:
+                exam_grade = "A"
+            elif exam_score >= 30:
+                exam_grade = "B"
+            elif exam_score >= 20:
+                exam_grade = "C"
+            elif exam_score >= 10:
+                exam_grade = "D"
+            else:
+                exam_grade = "F"
 
-        if exam_score <= 50:
-            exam_grade = "A"
-        elif exam_score >= 30:
-            exam_grade = "B"
-        elif exam_score >= 20:
-            exam_grade = "C"
-        elif exam_score >= 10:
-            exam_grade = "D"
-        else:
-            exam_grade = "F"
+            if asg_score <= 50:
+                asg_grade = "A"
+            elif asg_score >= 30:
+                asg_grade = "B"
+            elif asg_score >= 20:
+                asg_grade = "C"
+            elif asg_score >= 10:
+                asg_grade = "D"
+            else:
+                asg_grade = "F"
 
-        if asg_score <= 50:
-            asg_grade = "A"
-        elif asg_score >= 30:
-            asg_grade = "B"
-        elif asg_score >= 20:
-            asg_grade = "C"
-        elif asg_score >= 10:
-            asg_grade = "D"
-        else:
-            asg_grade = "F"
+            for student in data_grade:
+                if student_id == student["student_id"] and course_id == student["course_id"]:
+                    print(f"Student {student_id} already exists.")
+                    return
 
-        for student in data_grade:
-            if student_id == student["student_id"]:
-                print(f"Student {student_id} already exists.")
-                return
-
-        new_student = {"student_id": student_id, "exam_score": exam_score, "exam_grade": exam_grade,
-                       "assignment_score": asg_score,"assignment_grade": asg_grade,"feedback": feedback}
-        data.append(new_student)
-        save_data_file("data/garde.txt", data_grade)
-        print(f"Student {student_id} added.")
-        print(f"Student {student_id} exam_score: {exam_score}")
-        print(f"Student {student_id} exam_grade: {exam_grade}")
-        print(f"Student {student_id} assignment_score: {asg_score}")
-        print(f"Student {student_id} assignment_grade: {asg_grade}")
-        print(f"Feedback:{feedback}")
+            new_student = {"student_id": student_id, "course_id": course_id, "exam_score": exam_score, "exam_grade": exam_grade,
+                           "assignment_score": asg_score,"assignment_grade": asg_grade,"feedback": feedback}
+            data_grade.append(new_student)
+            save_data_file("data/grade.txt", data_grade)
+            print(f"Student {student_id} added.")
+            print(f"Student {student_id} exam_score: {exam_score}")
+            print(f"Student {student_id} exam_grade: {exam_grade}")
+            print(f"Student {student_id} assignment_score: {asg_score}")
+            print(f"Student {student_id} assignment_grade: {asg_grade}")
+            print(f"Feedback:{feedback}")
     except ValueError:
         print("Please enter a valid input")
 
@@ -144,30 +143,29 @@ def attendance_tracking():
     course_id = str(input("Enter course id:"))
     attendance_date = str(input("Enter date:"))
 
-    exists = any(
-        student["student_id"] == student_id and
-        student["course_id"] == course_id
-        for student in data_student)
-    if not exists:
-        print("Invalid input.")
-        return
+    found = False
+    for student in data_student:
+        if student["student_id"] == student_id:
+            for student_course in student["course_id"]:
+                if student_course == course_id:
+                    found = True
+    if found == True:
+        valid_status = ["absent","present"]
+        status = str(input("Enter attendance status(absent/present):"))
 
-    valid_status = ["absent","present"]
-    status = str(input("Enter attendance status(absent/present):"))
+        if status.lower() not in valid_status:
+            print("Invalid status. Please enter 'present' or 'absent'.")
+            status = str(input("Enter attendance status(Absent/Present):"))
 
-    if status.lower() not in valid_status:
-        print("Invalid status. Please enter 'present' or 'absent'.")
-        status = str(input("Enter attendance status(Absent/Present):"))
+        for record in data_attendance:
+            if record["student_id"] == student_id and record["course_id"] == course_id and record["date"] == attendance_date:
+                print(f"Attendance record for student {student_id} on {attendance_date} is already exists.")
+                return
 
-    for record in data_attendance:
-        if record["student_id"] == student_id and record["course_id"] == course_id and record["date"] == attendance_date:
-            print(f"Attendance record for student {student_id} on {attendance_date} is already exists.")
-            return
-
-    new_record = {"student_id": student_id,"course_id": course_id,"date": attendance_date,"status": status.lower()}
-    data_attendance.append(new_record)
-    save_data_file("data/attendance.txt",data_attendance)
-    print(f"Attendance recorded: {student_id} was {status} on {attendance_date}.")
+        new_record = {"student_id": student_id,"course_id": course_id,"date": attendance_date,"status": status.lower()}
+        data_attendance.append(new_record)
+        save_data_file("data/attendance.txt",data_attendance)
+        print(f"Attendance recorded: {student_id} was {status} on {attendance_date}.")
 
 
 def calculate_attendance(student_id,data):
@@ -226,7 +224,7 @@ def report_generation():
                     if wrong_key not in ["course", "grade", "attendance", "teacher review"]:
                         print("Please enter a valid data type")
                         continue
-                    correct_value = str(input("Enter the correct data"))
+                    correct_value = str(input("Enter the correct data:"))
                     if correct_value:
                         change_report[wrong_key] = correct_value
                         save_data_file("data/report.txt", report_list)
@@ -289,7 +287,7 @@ def report_generation():
             break
         else:
             print("please enter a valid number")
-report_generation()
+
 def teacher():
     while True:
         print("\n===== Teacher Management System =====")
@@ -364,4 +362,4 @@ def teacher():
 
         else:
             print("Invalid choice. Please select a number between 1 and 6.")
-
+teacher()
