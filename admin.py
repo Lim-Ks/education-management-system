@@ -4,6 +4,14 @@ from student import *
 from staff import *
 
 
+def change_data(file_name,data_key,wrong_data,correct_data):
+    data_list =load_data_file(file_name)
+    for data in data_list:
+        if wrong_data == data[data_key]:
+            data[data_key] = correct_data
+    save_data_file(file_name,data_list)
+
+
 def manage_user():
     while True:
         user_list = load_data_file("data/user.txt")
@@ -64,6 +72,58 @@ def manage_user():
             print("please enter a valid number")
 
 
+def schedule_management():
+    while True:
+        schedule_list =load_data_file("data/schedule.txt")
+        course_list =load_data_file("data/course.txt")
+        try:
+            user_input = int(input("==== Schedule Management ====\n1)view schedule\n2)change data\n3)exit\nEnter a number: "))
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+            continue
+        if user_input == 1:
+            for schedule in schedule_list:
+                for course in course_list:
+                    if course["course_id"] == schedule["course_id"]:
+                        course_name = course["course_name"]
+                print("------------")
+                print("schedule id: ", schedule["schedule_id"])
+                print("course name: ", course["course_name"])
+                print("date: ", schedule["date"])
+                print("duration: ", schedule["time"])
+                print("location: ", schedule["location"])
+                print("------------")
+        elif user_input == 2:
+            wrong_data = str(input("Enter the schedule id that you want to change"))
+            found = False
+            for schedule in schedule_list:
+                if wrong_data == schedule["schedule_id"]:
+                    found = True
+                    wrong_key = str(input("course_id, date, time, location\nEnter the data name: "))
+                    correct_value = str(input("Enter the correct data: "))
+                    if wrong_key not in ["course_id","date","time","loaction"]:
+                        print("Invalid Key")
+                        continue
+                    if wrong_key == "course_id":
+                        exists = any(course["course_id"] == correct_value for course in course_list)
+                        if not exists:
+                            print("Please enter a valid course id.")
+                            continue
+                    if correct_value:
+                        schedule[wrong_key] = correct_value
+                        save_data_file("data/schedule.txt",schedule_list)
+                        print("update successfully")
+                    else:
+                        print("correct data cannot be empty")
+            if found == False:
+                print("Schedule not found")
+                continue
+        elif user_input == 3:
+            break
+        else:
+            print("please enter a valid number")
+
+
 def student_management():
     while True:
         student_list = load_data_file("data/student.txt")
@@ -86,7 +146,7 @@ def student_management():
                 print("status: ",student["status"])
                 print("------------")
         elif choice == 2:
-            wrong_key = input("name, age course_id, phone_num, emergency_num, enrollment_status, status\nenter the data key that you want to change: ")
+            wrong_key = input("name, age, phone_num, emergency_num, enrollment_status, status\nenter the data key that you want to change: ")
             wrong_value = input("enter the data that you want to change: ")
             correct_value = input("enter the correct data: ")
             exists = any(student[wrong_key] == wrong_value for student in student_list)
@@ -106,7 +166,7 @@ def student_management():
                 print("student id: ", grade["student_id"])
                 print("name: ", grade["course_id"])
                 print("exam score: ", grade["exam_score"])
-                print("exam grade: ", (grade["exam_grade"]))
+                print("exam grade: ", grade["exam_grade"])
                 print("assignment score: ", grade["assignment_score"])
                 print("eassignment grade: ", grade["assignment_grade"])
                 print("teacher feedback: ", grade["feedback"])
@@ -354,4 +414,3 @@ def login():
             add_student()
             add_user(name,"student",password)
 
-login()

@@ -22,6 +22,10 @@ def validate_course_id(course_id):
     pattern = r'^CS\d{3}$'
     return re.match(pattern,course_id)
 
+def validate_schedule_id(schedule_id):
+    pattern = r'^SC\d{3}$'
+    return re.match(pattern,schedule_id)
+
 #main menu####
 def staff():
     while True:
@@ -148,31 +152,36 @@ def manage_timetable():
 
 def add_schedule():
     records = load_data_file("data/schedule.txt")
-    course_id = input("Enter Schedule Course ID: ").strip()
+    schedule_id = input("Enter Schedule ID: ").strip()
+    if not validate_schedule_id(schedule_id):
+        print("Invalid Schedule ID format. It must be in the format SC followed by 3 digits (e.g., SC000).")
+        return
+    course_id = input("Enter Course ID: ").strip()
     if not validate_course_id(course_id):
         print("Invalid Course ID format. It must be in the format CS followed by 3 digits (e.g., CS000).")
         return
     date = input("Enter Date (YYYY-MM-DD): ").strip()
-    if not validate_date(date):
-        print("Invalid date format. Please use YYYY-MM-DD.")
-        return
+    # if not validate_date(date):
+    #     print("Invalid date format. Please use YYYY-MM-DD.")
+    #     return
     time_val = input("Enter Time/Duration: ").strip()
     location = input("Enter Location: ").strip()
-    new_record = {"course_id": course_id, "date": date, "time": time_val, "location": location}
+    new_record = {"schedule_id":schedule_id,"course_id": course_id, "date": date, "time": time_val, "location": location}
     records.append(new_record)
     save_data_file("data/schedule.txt", records)
     print("Schedule added successfully.")
 
 def update_schedule():
     records = load_data_file("data/schedule.txt")
-    course_id = input("Enter Schedule Course ID to update: ").strip()
-    if not validate_course_id(course_id):
-        print("Invalid Course ID format. It must be in the format CS followed by 3 digits (e.g., CS000).")
+    schedule_id = input("Enter Schedule ID: ").strip()
+    if not validate_schedule_id(schedule_id):
+        print("Invalid Schedule ID format. It must be in the format SC followed by 3 digits (e.g., SC000).")
         return
     found = False
     for record in records:
-        if record.get("course_id").lower() == course_id.lower():
+        if record.get("schedule_id").lower() == schedule_id.lower():
             print("\nCurrent schedule details:")
+            print("Course ID:", record.get("course_id"))
             print("Date:", record.get("date"))
             print("Time:", record.get("time"))
             print("Location:", record.get("location"))
@@ -197,13 +206,13 @@ def update_schedule():
 
 def remove_schedule():
     records = load_data_file("data/schedule.txt")
-    course_id = input("Enter Schedule Course ID to remove: ").strip()
-    if not validate_course_id(course_id):
-        print("Invalid Course ID format. It must be in the format CS followed by 3 digits (e.g., CS000).")
+    schedule_id = input("Enter Schedule ID: ").strip()
+    if not validate_schedule_id(schedule_id):
+        print("Invalid Schedule ID format. It must be in the format SC followed by 3 digits (e.g., SC000).")
         return
-    new_records = [record for record in records if record.get("course_id").lower() != course_id.lower()]
+    new_records = [record for record in records if record.get("schedule_id").lower() != schedule_id.lower()]
     if len(new_records) == len(records):
-        print("No schedule found for that Course ID.")
+        print("No schedule found for that Schedule ID.")
     else:
         save_data_file("data/schedule.txt", new_records)
         print("Schedule removed successfully.")
@@ -215,6 +224,7 @@ def view_schedule():
     else:
         for record in records:
             print("------------")
+            print("Schedule ID:", record.get("schedule_id"))
             print("Course ID:", record.get("course_id"))
             print("Date:", record.get("date"))
             print("Time:", record.get("time"))
