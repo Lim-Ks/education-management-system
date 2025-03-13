@@ -182,38 +182,44 @@ def manage_schedule():
             for schedule in schedule_list:
                 for course in course_list:
                     if course["course_id"] == schedule["course_id"]:
-                        course_name = course["course_name"]
-                print("------------")
-                print("course name: ", course["course_name"])
-                print("date: ", schedule["date"])
-                print("duration: ", schedule["time"])
-                print("location: ", schedule["location"])
-                print("------------")
+                        print("------------")
+                        print("schedule id: ", schedule["schedule_id"])
+                        print("course name: ", course["course_name"])
+                        print("date: ", schedule["date"])
+                        print("duration: ", schedule["time"])
+                        print("location: ", schedule["location"])
+                        print("------------")
         elif user_input == 2:
-            try:
-                wrong_key = str(input("date, time, location\nEnter the data name: "))
-                wrong_value = str(input("Enter the wrong data: "))
-                correct_value = str(input("Enter the correct data: "))
-                exists = any(schedule[wrong_key] == wrong_value for schedule in schedule_list)
-                if not exists:
-                    print("Please enter a valid input.")
-                    continue
-            except KeyError:
-                print("Please enter a valid input ")
+            wrong_data = str(input("Enter the schedule id that you want to change"))
+            found = False
+            for schedule in schedule_list:
+                if wrong_data == schedule["schedule_id"]:
+                    found = True
+                    wrong_key = str(input("course_id, date, time, location\nEnter the data name: "))
+                    correct_value = str(input("Enter the correct data: "))
+                    if wrong_key not in ["course_id", "date", "time", "loaction"]:
+                        print("Invalid Key")
+                        continue
+                    if wrong_key == "course_id":
+                        exists = any(course["course_id"] == correct_value for course in course_list)
+                        if not exists:
+                            print("Please enter a valid course id.")
+                            continue
+                    if correct_value:
+                        schedule[wrong_key] = correct_value
+                        save_data_file("data/schedule.txt", schedule_list)
+                        print("update successfully")
+                    else:
+                        print("correct data cannot be empty")
+            if found == False:
+                print("Schedule not found")
                 continue
-            if correct_value:
-                change_data("data/schedule.txt", wrong_key, wrong_value, correct_value)
-            else:
-                print("correct data cannot be blank!")
-                continue
-            print("update successfully")
         elif user_input == 3:
             add_schedule()
         elif user_input == 4:
             break
         else:
             print("please enter a valid number")
-
 
 def report_generation():
     while True:
@@ -339,6 +345,7 @@ def teacher():
             print("===== Course Creation and Management =====")
             print("1. Manage Course")
             print("2. Manage Schedule")
+
 
             try:
                 course = int(input("Enter your choice (1-2): "))

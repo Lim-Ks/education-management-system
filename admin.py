@@ -85,14 +85,13 @@ def schedule_management():
             for schedule in schedule_list:
                 for course in course_list:
                     if course["course_id"] == schedule["course_id"]:
-                        course_name = course["course_name"]
-                print("------------")
-                print("schedule id: ", schedule["schedule_id"])
-                print("course name: ", course["course_name"])
-                print("date: ", schedule["date"])
-                print("duration: ", schedule["time"])
-                print("location: ", schedule["location"])
-                print("------------")
+                        print("------------")
+                        print("schedule id: ", schedule["schedule_id"])
+                        print("course name: ", course["course_name"])
+                        print("date: ", schedule["date"])
+                        print("duration: ", schedule["time"])
+                        print("location: ", schedule["location"])
+                        print("------------")
         elif user_input == 2:
             wrong_data = str(input("Enter the schedule id that you want to change"))
             found = False
@@ -129,7 +128,7 @@ def student_management():
         student_list = load_data_file("data/student.txt")
         grade_list = load_data_file("data/grade.txt")
         try:
-            choice = int(input("==== Student Management ====\n1) view student\n2) update student profile\n3) view student grade\n4) exit\nEnter your choice: "))
+            choice = int(input("==== Student Management ====\n1)view student\n2)update student profile\n3)view student grade\n4)exit\nEnter your choice: "))
         except ValueError:
             print("Invalid input. Please enter a number.")
             continue
@@ -146,20 +145,25 @@ def student_management():
                 print("status: ",student["status"])
                 print("------------")
         elif choice == 2:
-            wrong_key = input("name, age, phone_num, emergency_num, enrollment_status, status\nenter the data key that you want to change: ")
-            wrong_value = input("enter the data that you want to change: ")
-            correct_value = input("enter the correct data: ")
-            exists = any(student[wrong_key] == wrong_value for student in student_list)
-            if not exists:
-                print("Please enter a valid input.")
+            student_id = input("Enter the student id: ")
+            found = False
+            for student in student_list:
+                if student["student_id"] == student_id:
+                    found = True
+                    wrong_key = input("age, phone_num, emergency_num, enrollment_status, status\nenter the data key that you want to change: ")
+                    if wrong_key not in ["age","phone_num","emergency_num","enrollment_status","status"]:
+                        print("Invalid key")
+                        continue
+                    correct_value = input("enter the correct data: ")
+                    if correct_value:
+                        student[wrong_key] = correct_value
+                        save_data_file("data/student.txt",student_list)
+                        print("update successfully")
+                    else:
+                        print("correct data cannot be empty")
+            if found == False:
+                print("student not found")
                 continue
-            if correct_value:
-                change_data("data/student.txt", wrong_key, wrong_value, correct_value)
-                print("update successfully")
-                if wrong_key == "name":
-                    change_data("data/user.txt","name",wrong_value,correct_value)
-                    change_data("data/report.txt","name",wrong_value,correct_value)
-                    change_data("data/financial report.txt","name",wrong_value,correct_value)
         elif choice == 3:
             for grade in grade_list:
                 print("------------")

@@ -152,21 +152,22 @@ def manage_timetable():
 
 def add_schedule():
     records = load_data_file("data/schedule.txt")
-    schedule_id = input("Enter Schedule ID: ").strip()
-    if not validate_schedule_id(schedule_id):
-        print("Invalid Schedule ID format. It must be in the format SC followed by 3 digits (e.g., SC000).")
-        return
+    for number, data in enumerate(records):
+        if number == len(records)-1:
+            Schedule_id = data["schedule_id"]
+    schedule_id_number = int(Schedule_id.replace("SC","")) +1
+    new_schedule_id = f"SC00{schedule_id_number}"
     course_id = input("Enter Course ID: ").strip()
     if not validate_course_id(course_id):
         print("Invalid Course ID format. It must be in the format CS followed by 3 digits (e.g., CS000).")
         return
     date = input("Enter Date (YYYY-MM-DD): ").strip()
-    # if not validate_date(date):
-    #     print("Invalid date format. Please use YYYY-MM-DD.")
-    #     return
+    if not validate_date(date):
+        print("Invalid date format. Please use YYYY-MM-DD.")
+        return
     time_val = input("Enter Time/Duration: ").strip()
     location = input("Enter Location: ").strip()
-    new_record = {"schedule_id":schedule_id,"course_id": course_id, "date": date, "time": time_val, "location": location}
+    new_record = {"schedule_id":new_schedule_id,"course_id": course_id, "date": date, "time": time_val, "location": location}
     records.append(new_record)
     save_data_file("data/schedule.txt", records)
     print("Schedule added successfully.")
