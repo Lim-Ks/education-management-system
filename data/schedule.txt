@@ -1,5 +1,5 @@
 [
   {"schedule_id": "SC001", "course_id": "CS104", "date": "2025-3-2", "time": "10:00 AM - 12:00 PM", "location": "Room 101"},
   {"schedule_id": "SC002", "course_id": "CS102", "date": "2025-3-2", "time": "2:00 PM - 4:00 PM", "location": "Room 102"},
-  {"schedule_id": "SC003", "course_id": "CS103", "date": "2025-3-3", "time": "12:00 PM - 2.00PM", "location": "Room 103"}
+  {"schedule_id": "SC003", "course_id": "CS103", "date": "2025-3-3", "time": "12:00 PM - 2:00PM", "location": "Room 103"}
 ]

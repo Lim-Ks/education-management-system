@@ -1,5 +1,5 @@
 [
   {"course_id": "CS101", "course_name": "Introduction to Programming", "teacher": "Jane"},
   {"course_id": "CS102", "course_name": "Data Structures and Algorithms", "teacher": "Jane"},
-  {"course_id": "CS103", "course_name": "Database Management", "teacher": "Jane"}
+  {"course_id": "CS103", "course_name": "Database Management", "teacher": "Choong"}
 ]

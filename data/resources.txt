@@ -1,5 +1,6 @@
 [
   {"resource_id": "RE001", "resource_name": "projector", "quantity": 3, "allocated_to": "Room 101"},
   {"resource_id": "RE002", "resource_name": "computer", "quantity": 3, "allocated_to": "Room 102"},
-  {"resource_id": "RE003", "resource_name": "book", "quantity": 3, "allocated_to": "Room 103"}
+  {"resource_id": "RE003", "resource_name": "book", "quantity": 3, "allocated_to": "Room 103"},
+  {"resource_id": "RE004", "resource_name": "book", "quantity": 3, "allocated_to": ""}
 ]

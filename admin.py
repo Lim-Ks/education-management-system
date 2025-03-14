@@ -419,3 +419,4 @@ def login():
         elif user_input == 2:
             add_student()
 
+login()
