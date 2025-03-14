@@ -1,4 +1,3 @@
-from sharedfunction import *
 from teacher import *
 from student import *
 from staff import *

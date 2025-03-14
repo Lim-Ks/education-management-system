@@ -4,5 +4,6 @@
   {"student_id": "S103", "course_id": "CS103", "course_feedback": "could be better", "teacher_feedback": "could be better", "overall": "could be better"},
   {"student_id": "S101", "course_id": "CS102", "course_feedback": "Nice", "teacher_feedback": "nice", "overall": "very nice"},
   {"student_id": "S102", "course_id": "CS101", "course_feedback": "", "teacher_feedback": "", "overall": ""},
-  {"student_id": "S102", "course_id": "CS101", "course_feedback": "good", "teacher_feedback": "good", "overall": "good"}
+  {"student_id": "S102", "course_id": "CS101", "course_feedback": "good", "teacher_feedback": "good", "overall": "good"},
+  {"student_id": "S101", "course_id": "CS103", "course_feedback": "", "teacher_feedback": "", "overall": ""}
 ]

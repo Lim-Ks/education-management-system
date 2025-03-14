@@ -1,3 +1,4 @@
 [
-  {"sender": "xxx", "message": "hi"}
+  {"sender": "xxx", "message": "hi"},
+  {"sender": "aa", "message": "aa"}
 ]

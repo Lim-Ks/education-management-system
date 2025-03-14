@@ -156,7 +156,7 @@ def update_profile(student):
         if record["student_id"] == student["student_id"]:
             record["student_id"] = new_student_id
             record["name"] = new_name
-            record["student_age"] = new_age
+            record["age"] = new_age
             record["course_id"] = new_course_id
             record["phone_num"] = new_num
             record["emergency_num"] = new_emergency_num
