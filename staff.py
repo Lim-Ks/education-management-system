@@ -104,7 +104,7 @@ def withdraw_student():
     print("\nWithdraw Student")
     student_id = input("Enter Student ID to withdraw: ").strip()
     if not validate_student_id(student_id):
-        print("Invalid Student ID format. It must be in the format S followed by 3 digits (e.g., S000).")
+        print("Invalid Student ID format. It must be in the format S followed by 3 digits (e.g., S100).")
         return
     records = load_data_file("data/student.txt")
     found = False

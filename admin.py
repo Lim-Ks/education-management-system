@@ -99,10 +99,10 @@ def schedule_management():
                 if wrong_data == schedule["schedule_id"]:
                     found = True
                     wrong_key = str(input("course_id, date, time, location\nEnter the data name: "))
-                    correct_value = str(input("Enter the correct data: "))
-                    if wrong_key not in ["course_id","date","time","loaction"]:
+                    if wrong_key not in ["course_id","date","time","location"]:
                         print("Invalid Key")
                         continue
+                    correct_value = str(input("Enter the correct data: "))
                     if wrong_key == "course_id":
                         exists = any(course["course_id"] == correct_value for course in course_list)
                         if not exists:
@@ -172,7 +172,7 @@ def student_management():
                 print("exam score: ", grade["exam_score"])
                 print("exam grade: ", grade["exam_grade"])
                 print("assignment score: ", grade["assignment_score"])
-                print("eassignment grade: ", grade["assignment_grade"])
+                print("assignment grade: ", grade["assignment_grade"])
                 print("teacher feedback: ", grade["feedback"])
                 print("------------")
         elif choice == 4:
@@ -188,13 +188,13 @@ def generate_report():
         course_list = load_data_file("data/course.txt")
         financial_list = load_data_file("data/financial report.txt")
         try:
-            admin_input = int(input("===== Report Generation =====\n1)view report\n2)update report / financial report\n3)genearate report\n4)generate financial report\n5)exit\nEnter a number: "))
+            admin_input = int(input("===== Report Generation =====\n1)view report\n2)update report / financial report\n3)generate report\n4)generate financial report\n5)exit\nEnter a number: "))
         except ValueError:
             print("Invalid input. Please enter a number")
             continue
         if admin_input == 1:
             try:
-                choice = int(input("1)report\n2)financial report\nchoose the report that you want to update: "))
+                choice = int(input("1)report\n2)financial report\nchoose the report that you want to view: "))
             except ValueError:
                 print("Invalid input. Please enter a number")
                 continue
@@ -216,9 +216,9 @@ def generate_report():
                     print("------------")
                     print("student id: ", finance["student_id"])
                     print("name: ", finance["name"])
-                    print("total fee: ", finance["course"])
-                    print("total paid: ", finance["grade"])
-                    print("outstanding: ",finance["attendance"])
+                    print("total fee: ", finance["total_fee"])
+                    print("total paid: ", finance["total_paid"])
+                    print("outstanding: ",finance["outstanding"])
                     print("------------")
         elif admin_input == 2:
             try:
@@ -229,7 +229,7 @@ def generate_report():
             if choice not in [1,2]:
                 print("please enter 1 or 2")
                 continue
-            student_id =str(input("Enter the student`s student id that you want to update: "))
+            student_id =str(input("Enter the student id that you want to update: "))
             exists = any(student["student_id"] == student_id for student in student_list)
             found = False
             if not exists:
@@ -264,6 +264,8 @@ def generate_report():
                         if correct_value:
                             change_financial_report[wrong_key] =correct_value
                             save_data_file("data/financial report.txt", financial_list)
+                        else:
+                            print("correct data cannot be empty")
                 if found == False:
                     print(f"{student_id} report not found")
         elif admin_input == 3:
@@ -335,6 +337,9 @@ def generate_report():
                 if student["student_id"] == student_id:
                     student_name = student["name"]
             new_financial_report ={"student_id":student_id,"name":student_name,"total_fee":total_fee,"total_paid":total_paid,"outstanding":outstanding}
+            financial_list.append(new_financial_report)
+            save_data_file("data/financial report.txt",financial_list)
+            print("create successfully")
         elif admin_input == 5:
             break
         else:
@@ -383,6 +388,7 @@ def admin():
         else:
             print("please enter a valid number")
 
+
 def login():
     while True:
         try:
@@ -412,9 +418,5 @@ def login():
             print("Invalid role or password. Please try again.")
             break
         elif user_input == 2:
-            name = str(input("Enter your name: "))
-            password = str(input("Enter your password: "))
-            age = int(input("Enter your age: "))
             add_student()
-            add_user(name,"student",password)
 

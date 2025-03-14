@@ -32,6 +32,7 @@ def add_student():
     new_student = ({"student_id": new_student_id, "name": student_name, "age": student_age,
                      "course_id": [] , "phone_num": phone_num, "emergency_num": emergency_num,
                     "enrollment_status":"undone","status": "registered"})
+    add_user(student_name,"student",student_password)
     students.append(new_student)    #add new data
     save_data_file("data/student.txt", students)  #save new data to student.txt
     add_user(student_name,"student",student_password)

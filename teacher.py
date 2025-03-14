@@ -131,6 +131,8 @@ def grade():
             print(f"Student {student_id} assignment_score: {asg_score}")
             print(f"Student {student_id} assignment_grade: {asg_grade}")
             print(f"Feedback:{feedback}")
+        elif found == False:
+            print("student or course not found")
     except ValueError:
         print("Please enter a valid input")
 
@@ -156,7 +158,7 @@ def attendance_tracking():
 
         if status.lower() not in valid_status:
             print("Invalid status. Please enter 'present' or 'absent'.")
-            status = str(input("Enter attendance status(Absent/Present):"))
+            return
 
         for record in data_attendance:
             if record["student_id"] == student_id and record["course_id"] == course_id and record["date"] == attendance_date:
@@ -167,6 +169,8 @@ def attendance_tracking():
         data_attendance.append(new_record)
         save_data_file("data/attendance.txt",data_attendance)
         print(f"Attendance recorded: {student_id} was {status} on {attendance_date}.")
+    if found == False:
+        print("student or course not found")
 
 
 def manage_schedule():

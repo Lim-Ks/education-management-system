@@ -1,5 +1,5 @@
 [
-  {"student_id": "S101", "name": "Mike", "age": 20, "course_id": ["CS102", "CS101"], "phone_num": "0001", "emergency_num": "0002", "enrollment_status": "done", "status": "registered"},
+  {"student_id": "S101", "name": "Mike", "age": "21", "course_id": ["CS102", "CS101"], "phone_num": "0001", "emergency_num": "0002", "enrollment_status": "done", "status": "registered"},
   {"student_id": "S102", "name": "Emily", "age": 22, "course_id": ["CS102", "CS103"], "phone_num": "0003", "emergency_num": "0004", "enrollment_status": "done", "status": "registered"},
   {"student_id": "S103", "name": "Wilson", "age": 21, "course_id": ["CS103", "CS102"], "phone_num": "0005", "emergency_num": "0006", "enrollment_status": "done", "status": "registered"}
 ]

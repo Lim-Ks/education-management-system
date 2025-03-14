@@ -1,3 +1,5 @@
 [
-  {"student_id": "S101", "name": "John", "total_fee": 15000, "total_paid": 10000, "outstanding": 5000}
+  {"student_id": "S101", "name": "John", "total_fee": 15000, "total_paid": 10000, "outstanding": 5000},
+  {"student_id": "S103", "name": "Wilson", "total_fee": 14000, "total_paid": 5000, "outstanding": 9000},
+  {"student_id": "S102", "name": "Emily", "total_fee": 17000, "total_paid": 7000, "outstanding": 10000}
 ]

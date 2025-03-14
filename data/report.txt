@@ -1,5 +1,5 @@
 [
-  {"student_id": "S101", "name": "Mike", "course": "Introduction to Programming", "grade": "A", "attendance": "90%", "teacher_review": ""},
-  {"student_id": "S102", "name": "Emily", "course": "Data Structures and Algorithms", "grade": "B+", "attendance": "90%", "teacher_review": ""},
-  {"student_id": "S103", "name": "Wilson", "course": "Python", "grade": "A+", "attendance": "90%", "teacher_review": ""}
+  {"student_id": "S101", "name": "Mike", "course": "Introduction to Programming", "grade": "A", "attendance": "90%", "teacher_review": "good"},
+  {"student_id": "S102", "name": "Emily", "course": "Data Structures and Algorithms", "grade": "B+", "attendance": "90%", "teacher_review": "can be improved"},
+  {"student_id": "S103", "name": "Wilson", "course": "Database Management", "grade": "A+", "attendance": "90%", "teacher_review": "good"}
 ]

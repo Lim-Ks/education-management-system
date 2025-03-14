@@ -1,4 +1,5 @@
 [
-  {"student_id": "S101", "course_id":"CS101","exam_score": 45, "exam_grade": "A", "assignment_score": 40, "assignment_grade": "B", "feedback": "Nice"},
-  {"student_id": "S102", "course_id":"CS102","exam_score": 5, "exam_grade": "F", "assignment_score": 7, "assignment_grade": "F", "feedback": "Good"}
+  {"student_id": "S101", "course_id": "CS101", "exam_score": 45, "exam_grade": "A", "assignment_score": 40, "assignment_grade": "B", "feedback": "Nice"},
+  {"student_id": "S102", "course_id": "CS102", "exam_score": 5, "exam_grade": "F", "assignment_score": 7, "assignment_grade": "F", "feedback": "Good"},
+  {"student_id": "S103", "course_id": "CS103", "exam_score": 45, "exam_grade": "A", "assignment_score": 45, "assignment_grade": "A", "feedback": "good"}
 ]
