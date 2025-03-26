@@ -167,7 +167,7 @@ def student_management():
             for grade in grade_list:
                 print("------------")
                 print("student id: ", grade["student_id"])
-                print("name: ", grade["course_id"])
+                print("course id: ", grade["course_id"])
                 print("exam score: ", grade["exam_score"])
                 print("exam grade: ", grade["exam_grade"])
                 print("assignment score: ", grade["assignment_score"])
@@ -347,7 +347,6 @@ def generate_report():
 
 def resources_allocation():
     while True:
-        user_list = load_data_file("data/user.txt")
         try:
             choice = int(input("==== resources allocation ====\n1) view resources\n2) update resources\n3)exit\nEnter your choice: "))
         except ValueError:
